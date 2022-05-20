@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.challenge.java</groupId>
-	<artifactId>agenda telefónica</artifactId>
+	<artifactId>agenda</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>agenda telefónica</name>
+	<name>agenda</name>
 	<description>Proyecto Agenda Telefónica</description>
 	<properties>
 		<java.version>11</java.version>

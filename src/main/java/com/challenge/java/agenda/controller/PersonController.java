@@ -54,4 +54,9 @@ public class PersonController {
                 .toModel(person, personAssembler);
         return new ResponseEntity<>(personDtoModel,HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePerson(@PathVariable("id") Long id){
+        return new ResponseEntity<>(personService.delete(id), HttpStatus.OK);
+    }
 }

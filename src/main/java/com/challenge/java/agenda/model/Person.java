@@ -31,6 +31,7 @@ public class Person {
     private String name;
 
     @NotNull(message = "Phone field cannot be null")
+    @Column(unique = true)
     private String phone;
 
     @CreatedDate

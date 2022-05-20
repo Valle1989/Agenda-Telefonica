@@ -5,6 +5,7 @@ import com.challenge.java.agenda.dto.PersonResponseDto;
 import com.challenge.java.agenda.model.Person;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -16,4 +17,5 @@ public interface IPersonService {
     List<PersonResponseDto> getAll();
     List<PersonResponseDto> getNumberByName(String name);
     Page<Person> readAllPeople(Pageable pageable, int page);
+    ResponseEntity<?> delete(Long id);
 }
