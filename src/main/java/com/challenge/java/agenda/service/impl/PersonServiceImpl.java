@@ -67,18 +67,24 @@ public class PersonServiceImpl implements IPersonService {
     @Override
     public List<PersonResponseDto> getNumberByName(String name) {
         String personListIsEmpty = messageSource.getMessage("person.listEmpty", null, Locale.US);
+        String personNotFound = messageSource.getMessage("person.notFound", null, Locale.US);
         List<PersonResponseDto> personResponse = new ArrayList();
-        personRepository.findAll()
-                .stream()
-                .filter(person -> person.getName().toLowerCase().contains(name.toLowerCase()))
-                .forEach(person -> {
-                    PersonResponseDto personResponseDto = new PersonResponseDto();
-                    personResponseDto.setName(person.getName());
-                    personResponseDto.setPhone(person.getPhone());
-                    personResponse.add(personResponseDto);
-                });
-        if (personResponse.isEmpty()) {
-            throw new EmptyDataException(personListIsEmpty);
+        List<Person> existPerson = personRepository.findByName(name);
+        if(!existPerson.isEmpty()){
+            personRepository.findAll()
+                    .stream()
+                    .filter(person -> person.getName().toLowerCase().contains(name.toLowerCase()))
+                    .forEach(person -> {
+                        PersonResponseDto personResponseDto = new PersonResponseDto();
+                        personResponseDto.setName(person.getName());
+                        personResponseDto.setPhone(person.getPhone());
+                        personResponse.add(personResponseDto);
+                    });
+            if (personResponse.isEmpty()) {
+                throw new EmptyDataException(personListIsEmpty);
+            }
+        }else{
+            throw new NotFoundException(personNotFound);
         }
         return personResponse;
     }
