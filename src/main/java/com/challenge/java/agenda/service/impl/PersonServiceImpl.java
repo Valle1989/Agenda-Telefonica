@@ -33,9 +33,56 @@ public class PersonServiceImpl implements IPersonService {
     @Override
     public PersonResponseDto create(PersonRequestDto personRequestDto) {
         Person person = new Person();
-        personMapper.mapDtoToEntity(person, personRequestDto);
+        PersonRequestDto prd = PersonServiceImpl.newPhone(personRequestDto);
+        personMapper.mapDtoToEntity(person, prd);
         Person personSave = personRepository.save(person);
         return personMapper.mapEntityToDto(personSave);
+    }
+
+    private static PersonRequestDto newPhone(PersonRequestDto personRequestDto){
+        PersonRequestDto person = new PersonRequestDto();
+        person.setName(personRequestDto.getName());
+        person.setPhone(PersonServiceImpl.convertPhone(personRequestDto.getPhone()));
+        return person;
+    }
+
+    private static String convertPhone(String phone){
+        String patron = "^(\\+\\d{1,3}( )?)[ ](\\d{3}[- ]){2}\\d{4}$";
+        String patron2 = "^(\\+\\d{2}( )?)[ ](\\d{2}[ ]?)[ ](\\d{4})-(\\d{4})$";
+
+        StringBuffer number = new StringBuffer(phone);
+
+        if(phone.matches(patron) || phone.matches(patron2)) {
+            return number.toString();
+        }else if(phone.contains("+54341")){
+            number.insert(3, " ");
+            number.insert(7, " ");
+            number.insert(11, "-");
+            return number.toString();
+        }
+        else if(!phone.contains("+54") && phone.startsWith("341")) {
+            number.insert(0, "+");
+            number.insert(1, "5");
+            number.insert(2, "4");
+            number.insert(3, " ");
+            number.insert(7, " ");
+            number.insert(11, "-");
+            return number.toString();
+        }else if(!phone.contains("+54") && phone.startsWith("11")) {
+            number.insert(0, "+");
+            number.insert(1, "5");
+            number.insert(2, "4");
+            number.insert(3, " ");
+            number.insert(6, " ");
+            number.insert(11, "-");
+            return number.toString();
+        }
+        else {
+            number.insert(3, " ");
+            number.insert(6, " ");
+            number.insert(11, "-");
+            return number.toString();
+        }
     }
 
     @Override
